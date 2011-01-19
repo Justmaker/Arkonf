@@ -1,0 +1,343 @@
+# "-*- sh -*-"
+
+# pour changer de mot de passe : kpasswd (le mot de passe doit contenir au moins 3 de {minuscule, majuscule, nombre, symbole})
+# ./bin/java junit.textui.TestRunner com.exalead.mot.components.ut.BindingTests
+
+# ssh ng-build@localhost pour travailler dans /ng/sdk
+# make buildAndPublishSDK dans le trunk ou une branche donnée (avec une version sans modif locale) pour publier un SDK
+
+# pour installer un cloudview : ./dev/dev.sh install-kit <nomNouvelleConfig> <port>
+# pour compiler la config : ./dev/dev.sh buildgct <nomConfig>
+# pour lancer : ./dev/dev.sh start <nomConfig>
+# accessible dans localhost:<port>, administrable depuis localhost:<port+1>
+# utilisateur:admin pass:exalead
+# cf. http://ng/trac/mercury/wiki/HackingDebugging
+# grep \<AnalysisPipeline /data/jroquet/cloudview/test1/config/Analysis.xml pour trouver le nom du pipe
+# grep -B1 port /data/jroquet/cloudview/test1/gct/1/run/directory.xml | grep -A1 analyzer pour trouver le port
+# NGDATADIR=/data/jroquet/cloudview/test1/config  exa com.exalead.mercury.tools.console  -p <nomDuPipe>
+# ps aux | grep analyzer pour trouver le pid de cloudview
+# gdp -p <pid>
+# ou juste gdb -p `ps aux | sed -n "/analyzer/ { s/$USER \+\([0-9]\+\).\+/\1/p }" | head -n 1`
+# (gdb) c
+# $ analyze <port> <cheminVersLeFichierAAnalyser> dans la console de cloudview
+# + pour débugger : semantic, cloudview-core en debug et deps : cloudview-core -> semantic-trunk et cloudview -> cloudview-core-trunk *et* semantic-trunk
+# + pour valgrinder NG=third avant NGDATADIR...
+# cloudview stopexaprocess analyzer-bg0-0
+# ln -s /ng3/src/jroquet/svn/mercury/cloudview/trunk/scripts/ngexec bin/cvcommand
+
+# grep gateway /data/jroquet/cloudview/test1/gct/1/run/directory.xml | grep port pour trouver le port de la gateway
+# cvcommand localhost:<portGateway> command stop process=analyzer-bg0-0
+# cloudview startexaprocess <nomConfig> analyzer-bg0-0
+
+# Traces de debug dans /tmp/out.html
+# (pour les activer *en analyse*, rajouter un <DebugSemanticProcessor name="" outputFile="" /> dans /data/$USER/cloudview/$CONFIG/config/Analysis.xml)
+# (pour les activer *en requête*, rajouter un <PrettyPrinter /> dans cloudview-core/trunk/com/exalead/mot/clients/summary/QueryBiasedSummarizer.exa)
+
+# Pour les tests
+#Check out mercury java tools
+#ngscons
+#chckout mami-java-tests
+#ngscons
+#checkout mercury-tests
+#ngscons
+#mercury-tests/trunk/runTests.sh -h localhost -p 8080 -i test4 -o /tmp/tests_results -d /data/jroquet/cloudview/default -v5.0 -t test-search-expansion
+
+# DONE  SubTokenizerConcat => SubTokenizerConcatLowercase et SubTokenizerConcatNormalize
+# DONE <Form indexKind="1" tag="SubTokenizerLowercase"/>
+#      <Form indexKind="2" tag="SubTokenizerNormalize"/>
+#      <Form indexKind="1" tag="SubTokenizerConcatLowercase"/>
+#      <Form indexKind="2" tag="SubTokenizerConcatNormalize"/>
+# DONE dans /data/jroquet/cloudview/test4/config/Linguistic.xml
+# DONE (généré automatiquement à partir de cloudview-core /trunk/mami-helper/src/com/exalead/mercury/mami/helper/v10/core/LinguisticConfigHelper.java:~146)
+
+# ontologie pour le PoS
+# exa com.exalead.linguistic.buildOntologyFromXML /data/jroquet/PoS/newpos/enwiki-ontology.xml /data/jroquet/PoS/newpos/enwiki-ontology.bin /data/jroquet/cloudview/test6/config/Linguistic.xml  tok0
+
+# /net/madpc... pour les disques des autres machines
+
+# ng host:port help
+# ng host:port "search -n 1000 1000 1000 -h min max -q 'requêtes'"   // -n x x x : limite à x résultats, -h min max affiche de min à max
+
+# [export]
+# ng -r :10013 "export -v -index6" > <export2>
+# (./bin/NGIndex2PrintExport <export2> 3 | less)
+# ./bin/java com.exalead.index.binformat.Index2Export <export2> <export6>
+# [import]
+# refaire un install-kit (avec cloudview) qui utilise la même configuration
+# éditer config/BuildGroups.xml et ajouter index6="true" au buildgroupconfig, puis refaire un buildgct
+# ./bin/java com.exalead.index.build.BuildFromExport <index6> <export6>
+#
+# compil sous madmac042 (big endian)
+# NG_SDKDIR_LOCAL=/data/bruneau/sdk-local
+# NGSVNPATH=/usr/bin/svn
+# NGSVNVERSIONPATH=/usr/bin/svnversion
+# -t nojava
+#
+# Kits dans /ng/partner/cloudview-search/kits/
+# Kits QA dans /ng/partner/cloudview-search/autobuilt (non testés)
+#
+# cvconsole cv-c/com/exalead/mercury/tools/
+#
+# dumps trac (pour faire des stats marrantes : /ng/partner/trac-db-export)
+#
+# creation suggest:
+# - index2 : rm -rf /tmp/suggest.tmp && mkdir /tmp/suggest.tmp ; exa com.exalead.mot.suggest.suggestFromIndex -i localhost:10013 -f title -t /tmp/suggest.tmp/ -o suggest2.xml
+# - index6 : rm -rf /tmp/suggest ;./bin/java com.exalead.mot.suggest.SuggestFromIndex suggest3.xml FIXME -f title (où FIXME doit ressembler à http://localhost:10013, mais pas sûr du tout)
+#
+# NG=valgrind VGSKIN=callgrind pour faire du profiling
+
+#
+# Requêtes sur le globaldict: gdict()
+#
+
+# Utilisation de cvconsole / cvresource / cvconsole2
+# /ng5/src/jroquet/svn/mercury/cloudview/trunk/configStore/ResourceManager.xml
+# http://ng/trac/mercury/wiki/Specs/CV52/ResourceManager#Configuration
+# Si pas présent  <Role name="ResourceManager"/> dans config/Deployment.xml
+# ./dev/dev.sh cvconsole sentiment2
+# cvadmin resources list-resources group=rg0 (rg0 dans ResourceManager.xml)
+# cvadmin resources upload resource=senti path=/data/jroquet/cloudview/sentiment2/pub.xml format=xml comment=toto
+
+source /ng/src/$USER/svn/edk/tools/devenv/zsh/exalead.zsh
+
+PYTHONPATH="/data/compil/shedskin:$PYTHONPATH/"
+
+typeset -A namedpathes
+namedpathes=(
+    h ~/public_html
+
+    d /ng/src/$USER/svn/edk/tools/devenv/
+    z /ng/src/$USER/svn/edk/tools/devenv/zsh
+
+    e /ng/src/$USER/svn/edk/edk/trunk
+    e0 /ng/src/$USER/svn/edk/edk/branches/2.0
+    e1 /ng/src/$USER/svn/edk/edk/branches/2.1
+
+    i /ng/src/$USER/svn/platform/index6/trunk/com/exalead/index/list
+    i1 /ng/src/$USER/svn/platform/index6/branches/1.0
+
+    s /ng/src/$USER/svn/platform/semantic/trunk
+    s7 /ng/src/$USER/svn/platform/semantic/branches/1.7
+    s8 /ng/src/$USER/svn/platform/semantic/branches/1.8
+
+    m /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot
+    m7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot
+    m8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot
+
+    c /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/components
+    c7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/components
+    c8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/components
+
+    n /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/components/namedentities
+    n7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/components/namedentities
+    n8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/components/namedentities
+
+    t /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/components/sentimentanalyzer
+    t7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/components/sentimentanalyzer
+    t8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/components/sentimentanalyzer
+
+    p /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/tool/proxy
+    p7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/tool/proxy
+    p8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/tool/proxy
+
+    b /ng/src/$USER/svn/platform/semantic-build/trunk
+    bc /ng/src/$USER/svn/platform/semantic-build/trunk/com/exalead/mot/components
+    bo /ng/src/$USER/svn/platform/semantic-build/trunk/org
+
+    cc /ng/src/$USER/svn/platform/cloudview-core/trunk
+    cc2 /ng/src/$USER/svn/platform/cloudview-core/branches/1.2
+    cc0 /ng/src/$USER/svn/platform/cloudview-core/branches/2.0
+
+    v /ng/src/$USER/svn/mercury/cloudview/trunk
+    v1 /ng/src/$USER/svn/mercury/cloudview/branches/5.1
+    v2 /ng/src/$USER/svn/mercury/cloudview/branches/5.2
+
+    a /ng/src/$USER/svn/mercury/mercury-adminui/trunk
+
+    k /ng/sdk
+
+    cf /data/$USER/cloudview
+    cf1 /data/$USER/cloudview51
+
+    w /data/compil/Wikipedia
+)
+
+LOCALE="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+
+export LS_COLORS='*.blacklist=90':$LS_COLORS
+
+bindkey -s '^[m' '^[pngscons -df\n'
+
+# This fixes the autocompletion problem with svn 1.5
+function svn()
+{
+    /usr/bin/svn $@
+}
+
+function svnversion()
+{
+    /usr/bin/svnversion $@
+}
+
+function todo()
+{
+    cd ~/Documents/TODO
+    e TODO
+}
+
+alias zcle="zcl exa"
+alias zclx="zcl exatest"
+
+function dbgit()
+{
+    prefix 'NG=debug'
+}
+zle -N g dbgit
+function vlgit()
+{
+    prefix 'NG=valgrind'
+}
+zle -N v vlgit
+
+if [[ -n $abbrev ]]; then
+    abbrev[xa]='exatest'
+    abbrev[xac]='exatest com.exalead.mot.components.'
+    abbrev[xai]='exatest com.exalead.index.'
+    abbrev[xei]='exatest exa.io.'
+    abbrev[xes]='exatest com.exalead.mot.components.sentimentanalyzer.ut'
+    abbrev[xel]='exatest com.exalead.index.list.ut'
+fi
+
+source bookmarks
+ba semantic/trunk /ng/src/$USER/svn/platform/semantic/trunk/
+ba semantic/branches/1.7 /ng/src/$USER/svn/platform/semantic/branches/1.7
+ba semantic/branches/1.8 /ng/src/$USER/svn/platform/semantic/branches/1.8
+
+function ngco()
+{
+    svn co "http://ng/svn/$PWD:s/.*svn\////$1"
+}
+
+function ngcon()
+{
+    svn co -N "http://ng/svn/$PWD:t/$1"
+}
+
+function et()
+{
+    runinroot e $@
+}
+
+function tt()
+{
+    pushd `echo $PWD | sed 's@branches/[^/]\+@trunk@'` >&-
+}
+
+function bb()
+{
+    pushd $PWD:s@trunk@branches/*~branches >&-
+}
+
+function rt()
+{
+    pushd `echo $PWD | sed 's@\(branches/[^/]\+\|trunk\).\+@\1@'` >&-
+}
+
+function zee()
+{
+    e /ng/src/$USER/svn/edk/tools/devenv/zsh/exalead.zsh
+}
+
+function commitsfrom()
+{
+    local week wk repo project
+    week=`date +%U`
+
+    echo Commits in $1
+
+    repo=${${(s:/:)1}[1]}
+    project=${${(s:/:)1}[2]}
+
+    echo "<a href=\"/tmp/zcommits-$project.html\">$project</a> " >> /tmp/zcommits-all.html
+
+    cat >| /tmp/zcommits-$project.html <<EOF
+<html>
+  <head>
+    <title>Commits of last week</title>
+    <base target="content"/>
+  </head>
+  <body>
+EOF
+    pushd /ng/src/$USER/svn/$1 ; lg -l $2 | sed -n "/$USER/ { s/^r\([0-9]\+\).*\([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\).*/\1 \2/p }" | while read commit; do
+	wk=`echo $commit | cut -d ' ' -f 2`
+	if ((`date -d $wk +%U` + 1 < week)) break
+	commit=`echo $commit | cut -d ' ' -f 1`
+	echo "<a href=\"http://ng/trac/$repo/changeset/$commit\">$commit</a> "
+    done | sort >> /tmp/zcommits-$project.html ; popd >&-
+    cat >> /tmp/zcommits-$project.html <<EOF
+  </body>
+</html>
+EOF
+}
+
+function commits()
+{
+    cat >| /tmp/zcommits-all.html <<EOF
+<html>
+  <head>
+    <title>Commits of last week</title>
+    <base target="menu2"/>
+  </head>
+  <body>
+EOF
+
+    commitsfrom edk/edk/trunk 500
+    commitsfrom edk/tools 100
+    commitsfrom platform/semantic/trunk 500
+    commitsfrom platform/cloudview-core/trunk 500
+    commitsfrom platform/index6/trunk 500
+
+    cat >> /tmp/zcommits-all.html <<EOF
+  </body>
+</html>
+EOF
+
+    cat >| /tmp/zcommits.html <<EOF
+<html>
+  <head>
+    <title>Commits of last week</title>
+  </head>
+  <frameset rows="5%, 5%, 90%">
+    <frame name="menu1" src="/tmp/zcommits-all.html" target=""/>
+    <frame name="menu2" src="/tmp/zcommits-semantic.html" target=""/>
+    <frame name="content" src="/tmp/zcommits-semantic.html"/>
+  </frameset>
+</html>
+EOF
+}
+
+function gdict()
+{
+    lsof -i -P | grep -i listen | grep `ps aux | grep exa | grep dic0 | sed 's/^[a-z0-9]\+ \+\([0-9]\+\).*/\1/'` | sed 's/.*:\([0-9]\+\).*/\1/' | sort | head -n 1
+}
+
+function fgdict()
+{
+    firefox http://localhost:`gdict`/index.html
+}
+
+function api-ui()
+{
+    lsof -i -P | grep -i listen | grep `ps aux | grep java | grep ss0 | sed 's/^[a-z0-9]\+ \+\([0-9]\+\).*/\1/'` | sed 's/.*:\([0-9]\+\).*/\1/' | sort | head -n 2 | tail -n 1
+}
+
+function fapi-ui()
+{
+    firefox http://localhost:`api-ui`/search-api/search\?q=$2\&l=$1
+}
+
+pushd $0:h >&-
+source paths
+popd >&-
