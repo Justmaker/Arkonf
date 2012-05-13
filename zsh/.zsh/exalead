@@ -57,10 +57,10 @@ namedpathes=(
     bo /ng/src/$USER/svn/platform/semantic-build/trunk/org
 
     cc /ng/src/$USER/svn/platform/cloudview-core/trunk
-    cc2 /ng/src/$USER/svn/platform/cloudview-core/branches/1.2
+    cc12 /ng/src/$USER/svn/platform/cloudview-core/branches/1.2
     cc0 /ng/src/$USER/svn/platform/cloudview-core/branches/2.0
     cc1 /ng/src/$USER/svn/platform/cloudview-core/branches/2.1
-    cc3 /ng/src/$USER/svn/platform/cloudview-core/branches/V6R2013
+    cc2 /ng/src/$USER/svn/platform/cloudview-core/branches/2.2
 
     v /ng/src/$USER/svn/mercury/cloudview/trunk
     v1 /ng/src/$USER/svn/mercury/cloudview/branches/5.1
@@ -70,7 +70,8 @@ namedpathes=(
     a /ng/src/$USER/svn/mercury/mercury-adminui/trunk
 
     n /ng/src/$USER/svn/mercury/cvconsole/trunk/modules/src/com/exalead/cvconsole/
-    n3 /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013/modules/src/com/exalead/cvconsole/
+    n2 /ng/src/$USER/svn/mercury/cvconsole/branches/5.2/
+    n3 /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013/
 
     3 /ng/src/$USER/svn/360
 
@@ -87,22 +88,22 @@ export LS_COLORS='*.blacklist=90':$LS_COLORS
 
 function std99()
 {
-    ~jroquet/Documents/doc/c-c++/isoiec9899:1999-c-standard.pdf
+    ~/Documents/doc/c-c++/isoiec9899:1999-c-standard.pdf
 }
 
 function std98()
 {
-    ~jroquet/Documents/doc/c-c++/isoiec14882:1998-c++-standard.pdf
+    ~/Documents/doc/c-c++/isoiec14882:1998-c++-standard.pdf
 }
 
 function std03()
 {
-    ~jroquet/Documents/doc/c-c++/isoiec14882:2003-c++-standard.pdf
+    ~/Documents/doc/c-c++/isoiec14882:2003-c++-standard.pdf
 }
 
 function std11()
 {
-    ~jroquet/Documents/doc/c-c++/isoiec14882:n3242-c++-0x.pdf
+    ~/Documents/doc/c-c++/isoiec14882:n3242-c++-0x.pdf
 }
 
 # This fixes the autocompletion problem with svn 1.5
