@@ -211,7 +211,7 @@ EOF
 	if ((`date -d $wk +%U` + 1 < week)) break
 	commit=`echo $commit | cut -d ' ' -f 1`
 	echo "<a href=\"http://ng/trac/$repo/changeset/$commit\">$commit</a> "
-    done | sort >> /tmp/zcommits-$project.html ; popd >&-
+    done | sort >> /tmp/zcommits-$project.html ; popd > /dev/null
     cat >> /tmp/zcommits-$project.html <<EOF
   </body>
 </html>
@@ -339,4 +339,4 @@ function projectsgraph()
 
 pushd $0:h >&-
 source paths
-popd >&-
+popd > /dev/null
