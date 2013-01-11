@@ -16,6 +16,7 @@ namedpathes=(
     e0 /ng/src/$USER/svn/edk/edk/branches/2.0
     e1 /ng/src/$USER/svn/edk/edk/branches/2.1
     e2 /ng/src/$USER/svn/edk/edk/branches/2.2
+    e3 /ng/src/$USER/svn/edk/edk/branches/2.3
 
     i /ng/src/$USER/svn/platform/index6/trunk/com/exalead/index/list
     i1 /ng/src/$USER/svn/platform/index6/branches/1.1
@@ -26,31 +27,43 @@ namedpathes=(
     s7 /ng/src/$USER/svn/platform/semantic/branches/1.7
     s8 /ng/src/$USER/svn/platform/semantic/branches/1.8
     s9 /ng/src/$USER/svn/platform/semantic/branches/1.9
+    s0 /ng/src/$USER/svn/platform/semantic/branches/1.10
+    s1 /ng/src/$USER/svn/platform/semantic/branches/1.11
 
     l /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/linguistic
     l7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/linguistic
     l8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/linguistic
     l9 /ng/src/$USER/svn/platform/semantic/branches/1.9/com/exalead/linguistic
+    l0 /ng/src/$USER/svn/platform/semantic/branches/1.10/com/exalead/linguistic
+    l1 /ng/src/$USER/svn/platform/semantic/branches/1.11/com/exalead/linguistic
 
     m /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot
     m7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot
     m8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot
     m9 /ng/src/$USER/svn/platform/semantic/branches/1.9/com/exalead/mot
+    m0 /ng/src/$USER/svn/platform/semantic/branches/1.10/com/exalead/mot
+    m1 /ng/src/$USER/svn/platform/semantic/branches/1.11/com/exalead/mot
 
     c /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/components
     c7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/components
     c8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/components
     c9 /ng/src/$USER/svn/platform/semantic/branches/1.9/com/exalead/mot/components
+    c0 /ng/src/$USER/svn/platform/semantic/branches/1.10/com/exalead/mot/components
+    c1 /ng/src/$USER/svn/platform/semantic/branches/1.11/com/exalead/mot/components
 
     t /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/components/sentimentanalyzer
     t7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/components/sentimentanalyzer
     t8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/components/sentimentanalyzer
     t9 /ng/src/$USER/svn/platform/semantic/branches/1.9/com/exalead/mot/components/sentimentanalyzer
+    t0 /ng/src/$USER/svn/platform/semantic/branches/1.10/com/exalead/mot/components/sentimentanalyzer
+    t1 /ng/src/$USER/svn/platform/semantic/branches/1.11/com/exalead/mot/components/sentimentanalyzer
 
     p /ng/src/$USER/svn/platform/semantic/trunk/com/exalead/mot/tool/proxy
     p7 /ng/src/$USER/svn/platform/semantic/branches/1.7/com/exalead/mot/tool/proxy
     p8 /ng/src/$USER/svn/platform/semantic/branches/1.8/com/exalead/mot/tool/proxy
     p9 /ng/src/$USER/svn/platform/semantic/branches/1.9/com/exalead/mot/tool/proxy
+    p0 /ng/src/$USER/svn/platform/semantic/branches/1.10/com/exalead/mot/tool/proxy
+    p1 /ng/src/$USER/svn/platform/semantic/branches/1.11/com/exalead/mot/tool/proxy
 
     b /ng/src/$USER/svn/platform/semantic-build/trunk
     bc /ng/src/$USER/svn/platform/semantic-build/trunk/com/exalead/mot/components
@@ -61,17 +74,20 @@ namedpathes=(
     cc0 /ng/src/$USER/svn/platform/cloudview-core/branches/2.0
     cc1 /ng/src/$USER/svn/platform/cloudview-core/branches/2.1
     cc2 /ng/src/$USER/svn/platform/cloudview-core/branches/2.2
+    cc3 /ng/src/$USER/svn/platform/cloudview-core/branches/2.3
 
     v /ng/src/$USER/svn/mercury/cloudview/trunk
     v1 /ng/src/$USER/svn/mercury/cloudview/branches/5.1
     v2 /ng/src/$USER/svn/mercury/cloudview/branches/5.2
     v3 /ng/src/$USER/svn/mercury/cloudview/branches/V6R2013
+    v3x /ng/src/$USER/svn/mercury/cloudview/branches/V6R2013x
 
     a /ng/src/$USER/svn/mercury/mercury-adminui/trunk
 
     n /ng/src/$USER/svn/mercury/cvconsole/trunk/modules/src/com/exalead/cvconsole/
     n2 /ng/src/$USER/svn/mercury/cvconsole/branches/5.2/
     n3 /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013/
+    n3x /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013x/
 
     3 /ng/src/$USER/svn/360
 
@@ -312,7 +328,7 @@ function projectsgraph()
 	pushd $1 > /dev/null
 	(mv project.ini project.ini.projectsgraph.bak ; up project.ini) >& /dev/null
 	mv local.ini local.ini.projectsgraph.bak >& /dev/null
-	dep=`./scripts/sdk-admin getpathes 2> /dev/null | grep $2`
+	dep=`./scripts/sdk-admin getpaths 2> /dev/null | grep $2`
 	echo ${1#*/} → ${${dep##*/svn/}#*/}
 	mv -f project.ini.projectsgraph.bak project.ini >& /dev/null
 	mv -f local.ini.projectsgraph.bak local.ini >& /dev/null
