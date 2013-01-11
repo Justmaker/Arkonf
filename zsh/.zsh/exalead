@@ -353,6 +353,27 @@ function projectsgraph()
     popd > /dev/null
 }
 
+function tmuxjobs() {
+    tmux rename-session jobs
+
+    tmux new-window
+    tmux send-keys 'cdo' C-m
+
+    tmux new-window
+    tmux send-keys 'cdw && ./Arkbot' C-m
+    tmux send-keys 'for ((;;)); do ./watchpage.py "Wikipédia:Demande de purge d'"'"'historique" 30; sleep 1m; done' C-m
+
+    tmux last-window
+    tmux split-window -h
+    tmux send-keys 'htop' C-m
+    tmux split-window -v
+    tmux send-keys 'kill -15 `ps aux | sed -n '"'"'s/^jroquet \+\([0-9]\+\) \+.*c[h]mon.*/\1/p'"'"'`'
+    tmux select-pane -L
+    tmux send-keys './chmon.py ~/public_html/chmon -l -r' C-m
+
+    e ~/Documents/TODO/TODO -f org-mode -f show-all
+}
+
 pushd $0:h >&-
 source paths
 popd > /dev/null
