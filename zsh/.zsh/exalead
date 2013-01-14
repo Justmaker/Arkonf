@@ -294,7 +294,7 @@ function rup()
 {
     vcsroot up $@
 
-    if [[ $PWD = /ng(|[0-9])/src/$USER/svn/* ]]; then
+    if [[ $PWD = /ng(|[0-9]##)/src/$USER/svn/* ]]; then
 	rdup
     fi
 }
