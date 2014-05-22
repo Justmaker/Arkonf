@@ -5,13 +5,13 @@
 #  arkanosis@gmail.com
 
 if [ "$HOST" != 'gate-ssh' ]; then
-    LOGIN='roquet_j'
-    PSEUDO="Arkanosis"
-    EMAIL='arkanosis@gmail.com'
+    LOGIN='avanacke'
+    PSEUDO="Justmaker"
+    EMAIL='alexvanacker@gmail.com'
     SOCKS_PASSWORD=''
     PROXY_HOST=''
     PROXY_PORT=''
-    NNTPSERVER='news.epita.fr'
+    NNTPSERVER=''
     #PROMPT_COLOR="3`echo $(($RANDOM*6/32767+1))`"
     PROMPT_COLOR='cyan'
 

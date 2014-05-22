@@ -1,8 +1,6 @@
 # "-*- sh -*-"
 
-if which emacs >& /dev/null; then
-   export EDITOR='emacsclient -nw -s emacsconsole'
-elif which vim >& /dev/null; then
+if which vim >& /dev/null; then
    export EDITOR='vim'
 else
    export EDITOR='vi'

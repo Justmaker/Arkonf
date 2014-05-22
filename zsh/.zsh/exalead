@@ -98,6 +98,11 @@ namedpathes=(
 
     dc /data/compil
     w /data/compil/Wikipedia
+
+    op /ng/src/$USER/svn/apps/onepart/trunk/
+    oc /ng/src/$USER/svn/apps/onecall/trunk/
+    ac /ng/src/$USER/svn/apps/apps-commons/trunk/
+    af /ng/src/$USER/svn/apps/apps-front/trunk/
 )
 
 export LS_COLORS='*.blacklist=90':$LS_COLORS
