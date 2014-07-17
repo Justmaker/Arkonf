@@ -17,11 +17,14 @@ namedpathes=(
     e1 /ng/src/$USER/svn/edk/edk/branches/2.1
     e2 /ng/src/$USER/svn/edk/edk/branches/2.2
     e3 /ng/src/$USER/svn/edk/edk/branches/2.3
+    e4 /ng/src/$USER/svn/edk/edk/branches/2.4
 
-    i /ng/src/$USER/svn/platform/index6/trunk/com/exalead/index/list
+    i /ng/src/$USER/svn/platform/index6/trunk/
     i1 /ng/src/$USER/svn/platform/index6/branches/1.1
     i2 /ng/src/$USER/svn/platform/index6/branches/1.2
     i3 /ng/src/$USER/svn/platform/index6/branches/1.3
+    i4 /ng/src/$USER/svn/platform/index6/branches/1.4
+    i5 /ng/src/$USER/svn/platform/index6/branches/1.5
 
     s /ng/src/$USER/svn/platform/semantic/trunk
     s7 /ng/src/$USER/svn/platform/semantic/branches/1.7
@@ -75,12 +78,14 @@ namedpathes=(
     cc1 /ng/src/$USER/svn/platform/cloudview-core/branches/2.1
     cc2 /ng/src/$USER/svn/platform/cloudview-core/branches/2.2
     cc3 /ng/src/$USER/svn/platform/cloudview-core/branches/2.3
+    cc4 /ng/src/$USER/svn/platform/cloudview-core/branches/2.4
 
     v /ng/src/$USER/svn/mercury/cloudview/trunk
     v1 /ng/src/$USER/svn/mercury/cloudview/branches/5.1
     v2 /ng/src/$USER/svn/mercury/cloudview/branches/5.2
     v3 /ng/src/$USER/svn/mercury/cloudview/branches/V6R2013
     v3x /ng/src/$USER/svn/mercury/cloudview/branches/V6R2013x
+    v4 /ng/src/$USER/svn/mercury/cloudview/branches/V6R2014
 
     a /ng/src/$USER/svn/mercury/mercury-adminui/trunk
 
@@ -88,8 +93,15 @@ namedpathes=(
     n2 /ng/src/$USER/svn/mercury/cvconsole/branches/5.2/
     n3 /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013/
     n3x /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013x/
+    n4 /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2014/
 
     3 /ng/src/$USER/svn/360
+
+    x /ng/src/$USER/svn/apollo/squirrel/trunk
+
+    op /ng/src/$USER/svn/apps/onepart/trunk/webapps/360-mashup-ui/resources/onePart/js
+
+    solr /ng/src/$USER/svn/git/solr
 
     k /ng/sdk
 
@@ -299,7 +311,7 @@ function rup()
     fi
 }
 
-setpath()
+function setpath()
 {
     local oldPath
 
@@ -353,6 +365,25 @@ function projectsgraph()
     popd > /dev/null
 }
 
+function n() {
+    ngscons $@
+}
+function nf() {
+    [[ $PWD = *mercury-adminui* ]] && ngscons $@ || ngscons -f $@
+}
+function nd() {
+    ngscons -d $@
+}
+function ndf() {
+    [[ $PWD = *mercury-adminui* ]] && ngscons -d $@ || ngscons -df $@
+}
+function ncdf() {
+    [[ $PWD = *mercury-adminui* ]] && ngscons -Cd $@ || ngscons -Cdf $@
+}
+function rndf() {
+    rup && [[ $PWD = *mercury-adminui* ]] && ngscons -d $@ || ngscons -df $@
+}
+
 function tmuxjobs() {
     tmux rename-session jobs
 
@@ -372,6 +403,17 @@ function tmuxjobs() {
     tmux send-keys './chmon.py ~/public_html/chmon -l -r' C-m
 
     e ~/Documents/TODO/TODO -f org-mode -f show-all
+}
+
+function fpath() {
+    for file
+    do
+	if [[ $file:A =~ /data.* ]]; then
+            echo /net/${HOST}$file:A
+	else
+            echo $file:A
+	fi
+    done
 }
 
 pushd $0:h >&-
