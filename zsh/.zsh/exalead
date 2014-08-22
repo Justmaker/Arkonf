@@ -134,17 +134,6 @@ function std11()
     ~/Documents/doc/c-c++/isoiec14882:n3242-c++-0x.pdf
 }
 
-# This fixes the autocompletion problem with svn 1.5
-function svn()
-{
-    /usr/bin/svn $@
-}
-
-function svnversion()
-{
-    /usr/bin/svnversion $@
-}
-
 function todo()
 {
     cd ~/Documents/TODO
