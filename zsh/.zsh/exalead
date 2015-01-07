@@ -95,6 +95,10 @@ namedpathes=(
     n3x /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2013x/
     n4 /ng/src/$USER/svn/mercury/cvconsole/branches/V6R2014/
 
+    sd /ng/src/$USER/svn/connectors/sdc/trunk
+
+    sdc /ng/src/$USER/svn/connectors/sdc-connector/trunk
+
     3 /ng/src/$USER/svn/360
 
     x /ng/src/$USER/svn/apollo/squirrel/trunk
