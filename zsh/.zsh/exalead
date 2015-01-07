@@ -194,7 +194,7 @@ function tt()
 
 function bb()
 {
-    pushd $PWD:s@trunk@branches/*~branches >&-
+    pushd $PWD:s@trunk@branches/*~branches > /dev/null
 }
 
 function rt()
@@ -409,6 +409,6 @@ function fpath() {
     done
 }
 
-pushd $0:h >&-
+pushd $0:h > /dev/null
 source paths
 popd > /dev/null
