@@ -185,7 +185,7 @@ function et()
 
 function tt()
 {
-    pushd `echo $PWD | sed 's@branches/[^/]\+@trunk@'` >&-
+    pushd `echo $PWD | sed 's@branches/[^/]\+@trunk@'` > /dev/null
 }
 
 function bb()
@@ -195,7 +195,7 @@ function bb()
 
 function rt()
 {
-    pushd `echo $PWD | sed 's@\(branches/[^/]\+\|trunk\).\+@\1@'` >&-
+    pushd `echo $PWD | sed 's@\(branches/[^/]\+\|trunk\).\+@\1@'` > /dev/null
 }
 
 function zee()
