@@ -2,8 +2,6 @@
 
 source /ng/src/$USER/svn/edk/tools/devenv/zsh/exalead.zsh
 
-PYTHONPATH="/data/compil/shedskin:$PYTHONPATH/"
-
 typeset -A namedpathes
 namedpathes=(
     h ~/public_html
@@ -79,6 +77,8 @@ namedpathes=(
     cc2 /ng/src/$USER/svn/platform/cloudview-core/branches/2.2
     cc3 /ng/src/$USER/svn/platform/cloudview-core/branches/2.3
     cc4 /ng/src/$USER/svn/platform/cloudview-core/branches/2.4
+
+    cv /ng/src/$USER/svn/platform/cvcore-native/trunk
 
     v /ng/src/$USER/svn/mercury/cloudview/trunk
     v1 /ng/src/$USER/svn/mercury/cloudview/branches/5.1
@@ -412,3 +412,21 @@ function fpath() {
 pushd $0:h > /dev/null
 source paths
 popd > /dev/null
+
+function f() {
+    dfc -dp /tmp,/dev/sda3,/dev/sdb1,/dev/sdc1 $@
+}
+
+function gitblit() {
+    case $1 in
+	admin)
+	    ssh admin@git.paris.exalead.com -p 29418  gitblit users set j13 canAdmin true
+	;;
+	user)
+	    ssh admin@git.paris.exalead.com -p 29418  gitblit users set j13 canAdmin false
+        ;;
+	*)
+	    echo Unknown gitblit command \"$1\" >&2
+	;;
+    esac
+}
