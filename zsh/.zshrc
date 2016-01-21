@@ -15,7 +15,7 @@ if [ "$HOST" != 'gate-ssh' ]; then
     #PROMPT_COLOR="3`echo $(($RANDOM*6/32767+1))`"
     PROMPT_COLOR='cyan'
 
-    ARKONF_DIR="$HOME/Arkonf"
+    ARKONF_DIR="/data/avanacke/git/Arkonf"
     ZARKONF_DIR="$ARKONF_DIR/zsh"
     ZARKONF_CACHE="$HOME/.zcache"
     ZARKONF_TODO="$HOME/.ztodo"
