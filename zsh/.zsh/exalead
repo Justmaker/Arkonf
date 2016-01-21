@@ -2,7 +2,14 @@
 
 source /ng/src/$USER/svn/edk/tools/devenv/zsh/exalead.zsh
 
+export JAVA_HOME=/data/avanacke/devenv/jdk1.8.0_25
+export GRADLE_HOME=/data/avanacke/devenv/gradle-2.7
+export JSHINT_HOME=/data/avanacke/devenv/jshint-2.8.0
+export PATH=$GRADLE_HOME/bin:$JAVA_HOME/bin:$JSHINT_HOME/bin:/data/homes/avanacke/.meteor/:$PATH
+
+
 PYTHONPATH="/data/compil/shedskin:$PYTHONPATH/"
+
 
 typeset -A namedpathes
 namedpathes=(
@@ -97,15 +104,21 @@ namedpathes=(
     cf1 /data/$USER/cloudview51
 
     dc /data/compil
-    w /data/compil/Wikipedia
+    w /data.2/$USER/workspace
 
+    opk /ng/src/$USER/svn/apps/onepart-kit/trunk/
+    ock /ng/src/$USER/svn/apps/onecall-kit/trunk/ 
     op /ng/src/$USER/svn/apps/onepart/trunk/
     oc /ng/src/$USER/svn/apps/onecall/trunk/
     ac /ng/src/$USER/svn/apps/apps-commons/trunk/
     af /ng/src/$USER/svn/apps/apps-front/trunk/
+    r  /ng/src/$USER/svn/apps/reduce/trunk/
+    aa /ng/src/$USER/svn/apps/apps-analytics/trunk/
 )
 
 export LS_COLORS='*.blacklist=90':$LS_COLORS
+
+alias synergy="~/synergy/usr/bin/synergy"
 
 function std99()
 {
@@ -125,17 +138,6 @@ function std03()
 function std11()
 {
     ~/Documents/doc/c-c++/isoiec14882:n3242-c++-0x.pdf
-}
-
-# This fixes the autocompletion problem with svn 1.5
-function svn()
-{
-    /usr/bin/svn $@
-}
-
-function svnversion()
-{
-    /usr/bin/svnversion $@
 }
 
 function todo()
@@ -377,6 +379,14 @@ function tmuxjobs() {
     tmux send-keys './chmon.py ~/public_html/chmon -l -r' C-m
 
     e ~/Documents/TODO/TODO -f org-mode -f show-all
+}
+
+function chmon(){
+    python /ng/src/$USER/svn/edk/tools/chmon/chmon_apps.py /udir/$USER/public_html/chmon/
+}
+
+function jrds(){
+    /ng/sdk/jrds-standalone/latest/jrds.sh launch $1
 }
 
 pushd $0:h >&-
