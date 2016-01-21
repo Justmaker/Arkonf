@@ -1,0 +1,3 @@
+subversion:
+  pkg:
+    - latest

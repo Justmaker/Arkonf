@@ -1,8 +1,8 @@
 # "-*- sh -*-"
 
-#  Zsh Conf - Basée sur zArkonf v0.7
-#  (C) 2007-2009 - Arkanosis
-#  arkanosis@gmail.com
+#  ZSH configuration
+#  (C) 2007-2015 - Jérémie Roquet
+#  jroquet@arkanosis.net
 
 if [ "$HOST" != 'gate-ssh' ]; then
     LOGIN='avanacke'
@@ -21,24 +21,14 @@ if [ "$HOST" != 'gate-ssh' ]; then
     ZARKONF_TODO="$HOME/.ztodo"
 
     MONITORED_PAGES=(
-	'W|http://fr.wikipedia.org/wiki/Discussion_utilisateur:Arkanosis'
     )
 
-    pushd "$ZARKONF_DIR/.zsh" >&-
+    pushd "$ZARKONF_DIR/.zsh" > /dev/null
 
     source ./zshrc
 
     case $HOST in
-	lisp|caml|ruby|ada|php|asp|sh|java|apl|pascal|xenadev)
-	    source ./acu
-	;;
-	Cyclamen)
-	    source ./cyclamen
-	;;
-	Edelweiss)
-	    source ./edelweiss
-	;;
-	reddev0(0|1)4|(ng|tc)dev00(2|3))
+	reddev0(0|1)4|(ng|tc)dev00(2|3)|nglqa021.paris.exalead.com)
 	    source ./exalead
 	    export PATH=$PATH:s/Linux-x86_64/RedHat/
 	;;
@@ -46,14 +36,10 @@ if [ "$HOST" != 'gate-ssh' ]; then
 	    source ./exalead
 	    NO_VCS_INFO=True
 	    export PATH=/opt/csw/bin:/opt/sfw/bin:/ng/sdk/tools/devenv/bin:/ng/bin:/bin:/usr/bin:$PATH
+	    export LD_LIBRARY_PATH=/opt/csw/lib:$LD_LIBRARY_PATH
 	;;
-	mad*|reddev*|tcdev*|*dsy|lenov*|ngci*)
+	mad*|reddev*|tcdev*|*dsy|lenov*|ngci*|ngdev*|local_Linux-x86_64)
 	    source ./exalead
-	;;
-	*)
-	    if which ns_who >&-; then
-		source ./epita
-	    fi
 	;;
     esac
 

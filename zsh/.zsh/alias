@@ -8,7 +8,7 @@ function cx()
 if grep --color . <(echo .) >& /dev/null; then
     function grep()
     {
-	command grep --color=always $@
+	command grep --color=auto $@
     }
 fi
 
@@ -55,4 +55,9 @@ function py()
 function pw()
 {
     pwgen --secure --ambiguous 9
+}
+
+function fu()
+{
+    sudo aptitude update && sudo aptitude full-upgrade
 }

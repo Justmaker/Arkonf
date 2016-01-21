@@ -59,7 +59,7 @@ function cpo()
 }
 function gpp()
 {
-    g++ -Wall -Wextra -Wconversion -Wabi -std=c++98 -pedantic -Wno-long-long $@ |& colorizeGCC
+    g++ -Wall -Wextra -Wconversion -Wabi -std=c++11 -pedantic -Wno-long-long $@ |& colorizeGCC
 }
 
 function tcp()
@@ -136,18 +136,6 @@ function arf()
 {
     autoreconf -if $@
 }
-
-function acm()
-{
-    autoreconf -if >- && ./configure >- && echo && echo && echo '-----------------------------------' && echo && echo && make clean all >- $@
-}
-
-if which sdl-config >&-; then
-    function cplg()
-    {
-	cpl `sdl-config --libs`  -I/usr/pkg/include/ -I/usr/pkg/include/GL -lGL -lGLU -lglut -lSDL_ttf -lSDL_image `sdl-config --cflags` $@
-    }
-fi
 
 function dcm()
 {

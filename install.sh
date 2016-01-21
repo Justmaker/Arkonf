@@ -12,12 +12,16 @@ install()
 }
 
 printf '\033[33mArkinstall v0.1\n'
-printf '(C) 2009-2012 - Arkanosis\n'
-printf 'arkanosis@gmail.com\n'
+printf '(C) 2009-2015 - Arkanosis\n'
+printf 'jroquet@arkanosis.net\n'
 printf 'Check for latest version at http://github.com/Arkanosis/Arkonf\033[0m\n'
 
 echo
 
+install dotfiles/.forward ~/.forward
+install dotfiles/.pgpkey ~/.pgpkey
+install dotfiles/.plan ~/.plan
+install dotfiles/.project ~/.project
 install dotfiles/.signature ~/.signature
 
 install zsh/.zshrc ~/.zshrc
@@ -42,6 +46,9 @@ install weechat/.weechat ~/.weechat
 
 install slrn/.slrnrc ~/.slrnrc
 
+mkdir ~/.config/lxc
+install lxc/default.conf ~/.config/lxc/default.conf
+
 install ssh/.ssh/config ~/.ssh/config
 
 install screen/.screenrc ~/.screenrc
@@ -53,8 +60,6 @@ install vim/.vimrc ~/.vimrc
 install vim/.vim ~/.vim
 
 install awesome ~/.config/awesome
-install fluxbox/.fluxbox ~/.fluxbox
-install xmonad ~/.xmonad
 
 install xorg/.Xmodmap ~/.Xmodmap
 install xorg/.Xresources ~/.Xresources
